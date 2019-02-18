@@ -1,0 +1,9 @@
+{
+  "max-connection": 2,
+  "port" : 3100,
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "password"
+  }
+}

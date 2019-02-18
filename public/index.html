@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>DB Query</title>
+  </head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/index.js"></script>
+  <body>
+    <div class="container">
+      <form id="query-form">
+        <div class="query-input-block">
+          <label for="query">Type In Your SQL Query</label>
+          <input type="text" id="query-input" name="query-input" placeholder="E.g. SELECT 1"/>
+          <button id="query-send">Send the query</button>
+        </div>
+        <div class="query-result-block">
+          <textarea readonly id="query-result" rows="4" cols="50"></textarea>
+          <h4 id="query-error"></h4>
+          <h4 id="query-wait"></h4>
+        </div>
+      </form>
+    </div>
+  </body>
+  <script>
+    var socket = io('http://localhost:3100');
+    socket.on('user-limit-reached', () => {
+      window.location.replace('http://localhost:3100/403.html?reason=user-max-limit');
+    });
+    socket.on('query-result', data => {
+      querySendDone();
+      queryDisplayResult(data)
+    });
+    socket.on('query-error', data => {
+      queryDisplayError(data)
+    });
+
+    querySendEventListener();
+  </script>
+</html>
